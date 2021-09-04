@@ -7,14 +7,18 @@ body {
     background-color: #000000;
     font-family: 'Times New Roman', Times, serif;
     margin: 180px;
-}
-
-#container {
     border: 5px solid #fff;
     border-radius: 10px;
     padding: 60px 80px;
     box-shadow: 10px 10px 10px #3a3939;
 }
+
+/* #container {
+    border: 5px solid #fff;
+    border-radius: 10px;
+    padding: 60px 80px;
+    box-shadow: 10px 10px 10px #3a3939;
+} */
 
 h1 {
     margin: 30px;

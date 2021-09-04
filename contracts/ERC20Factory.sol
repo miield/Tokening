@@ -24,7 +24,7 @@ contract TokenFactory {
     
     mapping(address => Token) internal tokenDetails;
     
-    event TokenCreated(address walletAddress, string name, string symbol, uint amount);
+    event TokenCreated(address walletAddress, string name, string symbol, uint amount, bool isExist);
     event TokenNewName(string newName);
     
     Token[] internal allTokens;
@@ -46,7 +46,7 @@ contract TokenFactory {
         newToken.tokenTotalSupply = totalSupply;
         newToken.isExist = true;
         allTokens.push(newToken);
-        emit TokenCreated(walletAddress,name, symbol, totalSupply);
+        emit TokenCreated(walletAddress,name, symbol, totalSupply, true);
         return newToken;
     }
     
