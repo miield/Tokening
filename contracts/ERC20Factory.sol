@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "./ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+// import "./ERC20.sol";
 
-contract TokenFactory {
+contract TokenFactory is ERC20 {
     
     address internal owner;
     
@@ -11,7 +12,7 @@ contract TokenFactory {
         owner = msg.sender;
     }
     
-    GenerateToken internal userToken;
+    // GenerateToken internal userToken;
     
     // template for each token created
     struct Token {
@@ -23,9 +24,10 @@ contract TokenFactory {
     }
     
     mapping(address => Token) internal tokenDetails;
-    
+    Token createdT = tokenDetails[msg.sender];
+
     event TokenCreated(address walletAddress, string name, string symbol, uint amount, bool isExist);
-    event TokenNewName(string newName);
+    //event ViewCreatedToken(Token);
     
     Token[] internal allTokens;
     
@@ -34,25 +36,31 @@ contract TokenFactory {
         _;
     }
     
-    function createToken(address walletAddress, string memory name, string memory symbol, uint totalSupply) public returns(Token memory) {
-        require(walletAddress == msg.sender, "Enter your current address");
-        require(tokenDetails[walletAddress].isExist == false, "You're not allowed");
-        require(walletAddress != address(0), "Invalid address");
-        userToken = new GenerateToken(msg.sender, name, symbol, totalSupply);
-        Token storage newToken = tokenDetails[walletAddress];
-        newToken.tokenAddress = walletAddress;
+    function createToken(
+        // address walletAddress, 
+        string memory name, 
+        string memory symbol, 
+        uint totalSupply
+        ) public returns(Token memory) {
+        // require(walletAddress == msg.sender, "Enter your current address");
+        require(tokenDetails[msg.sender].isExist == false, "You're not allowed");
+        require(msg.sender != address(0), "Invalid address");
+        // userToken = new GenerateToken(msg.sender, name, symbol, totalSupply);
+        Token storage newToken = tokenDetails[msg.sender];
+        newToken.tokenAddress = msg.sender;
         newToken.tokenName = name;
         newToken.tokenSymbol = symbol;
         newToken.tokenTotalSupply = totalSupply;
         newToken.isExist = true;
         allTokens.push(newToken);
-        emit TokenCreated(walletAddress,name, symbol, totalSupply, true);
+        emit TokenCreated(msg.sender, name, symbol, totalSupply, true);
         return newToken;
     }
     
     function viewToken() public view returns(Token memory) {
         require(tokenDetails[msg.sender].isExist == true, "You need to create a token first");
         require(msg.sender != address(0), "Invalid address");
+      //  emit ViewCreatedToken(tokenDetails[msg.sender]);
         return tokenDetails[msg.sender];
     }
     

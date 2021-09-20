@@ -21,8 +21,24 @@ describe("Test TokenFactory variables", async function() {
       tokenTotalSupply: 10000,
       isExist:true
     }
-  });
 
+    const tokens = [
+      {
+        tokenAddress: signer2.address,
+        tokenName: "Efunroye",
+        tokenSymbol: "ETK",
+        tokenTotalSupply: 55000,
+        isExist:true
+      },
+      {
+        tokenAddress: signer3.address,
+        tokenName: "Abiola",
+        tokenSymbol: "ATN",
+        tokenTotalSupply: 2500000,
+        isExist:true
+      }
+    ];
+  });
 
   it("Should return a token created", async function () {
     const cToken = await tokenFactory.connect(signer2).createToken(obj.tokenAddress, obj.tokenName, obj.tokenSymbol, obj.tokenTotalSupply);
@@ -36,16 +52,20 @@ describe("Test TokenFactory variables", async function() {
 
   it("Should return all tokens", async function () {
     const vToken = await tokenFactory.connect(signer1).viewAllToken();
-    vToken.forEach(item => {
-      assert.equal(item.tokenAddress, signer2.address)
-      assert.equal(item.tokenName, 'Dassy')
-      assert.equal(item.tokenSymbol, 'DKT')
-      assert.equal(item.tokenTotalSupply, 10000)
-      assert.equal(item.isExist, true)
-    });
+    // console.log(vToken);
+    assert.equal(vToken.tokenName, 'Dassy', 'tokenName is correct');
+    expect(vToken.map(tokens=>({:e.title}))).to.include({title:"Blah"});
+    // vToken.forEach(item => {
+    //   assert.equal(item.tokenAddress, signer2.address)
+    //   assert.equal(item.tokenName, 'Dassy')
+    //   assert.equal(item.tokenSymbol, 'DKT')
+    //   assert.equal(item.tokenTotalSupply, 10000)
+    //   assert.equal(item.isExist, true)
+    // });
   });
 
-  it("Should return a token created", async function () {
+  it("Should revert for invalid address", async function () {
    await tokenFactory.connect(signer3).viewToken().should.be.rejected;
+   await tokenFactory.connect(signer2).viewAllToken().should.be.rejected;
   });
 });
