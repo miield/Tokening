@@ -8,12 +8,12 @@ async function main() {
   // await tokenFactory.deployed(); // normal
   const deployedContract = await tokenFactory.deployed();
 
-  console.log("tokenFactory deployed to:", deployedContract);
+  console.log("tokenFactory deployed to:", deployedContract.address);
 
   // get the signers and get a signer
   const signers = await ethers.getSigners();
   let signer = signers[0];
-  console.log(signer, "original");
+  console.log(signer.address, "original");
 
   // create new token and emit the event
   const tkn = await deployedContract.connect(signer).createToken("Oyindamola", "OYT", 250000);

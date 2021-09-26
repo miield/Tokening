@@ -77,11 +77,8 @@ console.log(contract)
 }
 async function connect (){
   await getAbiCode()
-  
     console.log(_abiCode.abi, 'abi cod')
     //get provider object 
-   
-
 }
 
 

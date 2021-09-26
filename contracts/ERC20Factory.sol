@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-// import "./ERC20.sol";
+import "./ERC20.sol";
 
-contract TokenFactory is ERC20 {
+contract TokenFactory {
     
     address internal owner;
     
@@ -12,7 +11,7 @@ contract TokenFactory is ERC20 {
         owner = msg.sender;
     }
     
-    // GenerateToken internal userToken;
+    GenerateToken internal userToken;
     
     // template for each token created
     struct Token {
@@ -24,10 +23,10 @@ contract TokenFactory is ERC20 {
     }
     
     mapping(address => Token) internal tokenDetails;
-    Token createdT = tokenDetails[msg.sender];
+    Token public createdT = tokenDetails[msg.sender];
 
     event TokenCreated(address walletAddress, string name, string symbol, uint amount, bool isExist);
-    //event ViewCreatedToken(Token);
+    event ViewCreatedToken(Token);
     
     Token[] internal allTokens;
     
@@ -45,7 +44,7 @@ contract TokenFactory is ERC20 {
         // require(walletAddress == msg.sender, "Enter your current address");
         require(tokenDetails[msg.sender].isExist == false, "You're not allowed");
         require(msg.sender != address(0), "Invalid address");
-        // userToken = new GenerateToken(msg.sender, name, symbol, totalSupply);
+        userToken = new GenerateToken(msg.sender, name, symbol, totalSupply);
         Token storage newToken = tokenDetails[msg.sender];
         newToken.tokenAddress = msg.sender;
         newToken.tokenName = name;
@@ -60,7 +59,7 @@ contract TokenFactory is ERC20 {
     function viewToken() public view returns(Token memory) {
         require(tokenDetails[msg.sender].isExist == true, "You need to create a token first");
         require(msg.sender != address(0), "Invalid address");
-      //  emit ViewCreatedToken(tokenDetails[msg.sender]);
+        // emit ViewCreatedToken(tokenDetails[msg.sender]);
         return tokenDetails[msg.sender];
     }
     

@@ -54,7 +54,7 @@ describe("Test TokenFactory variables", async function() {
     const vToken = await tokenFactory.connect(signer1).viewAllToken();
     // console.log(vToken);
     assert.equal(vToken.tokenName, 'Dassy', 'tokenName is correct');
-    expect(vToken.map(tokens=>({:e.title}))).to.include({title:"Blah"});
+    expect(vToken.map(tokens=>({title}))).to.include({title:"Blah"});
     // vToken.forEach(item => {
     //   assert.equal(item.tokenAddress, signer2.address)
     //   assert.equal(item.tokenName, 'Dassy')
